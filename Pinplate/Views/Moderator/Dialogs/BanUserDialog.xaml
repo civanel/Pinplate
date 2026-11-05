@@ -1,0 +1,92 @@
+﻿<Window x:Class="Pinplate.Views.Moderator.Dialogs.BanUserDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Забанить пользователя"
+        Width="440" Height="420"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="White"
+        WindowStyle="None"
+        AllowsTransparency="True">
+
+    <Border CornerRadius="12" Background="White" Margin="20">
+        <Border.Effect>
+            <DropShadowEffect Color="#444" BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="25,20,25,10">
+                <TextBlock Text="Забанить пользователя"
+                           FontSize="16" FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                <TextBlock Text="✕" FontSize="16"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           HorizontalAlignment="Right" Cursor="Hand"
+                           MouseLeftButtonUp="Close_Click"/>
+            </Grid>
+
+            <StackPanel Grid.Row="1" Margin="25,10">
+                <TextBlock x:Name="UserNameText" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,15"/>
+
+                <TextBlock Text="Причина бана:" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Margin="0,0,0,8"/>
+
+                <RadioButton Content="Спам"  x:Name="SpamRadio" GroupName="BanReason"
+                             Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,6"/>
+                <RadioButton Content="Оскорбления" GroupName="BanReason"
+                             Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,6"/>
+                <RadioButton Content="Нарушение авторских прав" GroupName="BanReason"
+                             Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,6"/>
+                <RadioButton x:Name="OtherRadio" Content="Другое:"
+                             GroupName="BanReason"
+                             Foreground="{StaticResource TextPrimaryBrush}"
+                             Margin="0,0,0,8" Checked="OtherRadio_Checked"/>
+
+                <TextBox x:Name="OtherReasonBox"
+                         Padding="10,8" Background="#F5EDE8" BorderThickness="0"
+                         Margin="20,0,0,0" Height="60" TextWrapping="Wrap"
+                         VerticalContentAlignment="Top" IsEnabled="False"/>
+
+                <TextBlock Text="Срок блокировки:" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Margin="0,15,0,8"/>
+                <ComboBox x:Name="DurationBox" Height="36">
+                    <ComboBoxItem Content="1 день" IsSelected="True"/>
+                    <ComboBoxItem Content="7 дней"/>
+                    <ComboBoxItem Content="30 дней"/>
+                    <ComboBoxItem Content="Навсегда"/>
+                </ComboBox>
+
+                <CheckBox Content="Удалить все рецепты пользователя"
+                          Foreground="{StaticResource TextPrimaryBrush}"
+                          FontSize="12" Margin="0,15,0,0"/>
+            </StackPanel>
+
+            <Grid Grid.Row="2" Margin="25,10,25,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Content="Отмена"
+                        Background="Transparent"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        BorderBrush="#DDDDDD" BorderThickness="1"
+                        Padding="25,10" Cursor="Hand"
+                        Click="Close_Click" Style="{StaticResource SmallButtonStyle}"/>
+                <Button Grid.Column="2" Content="Забанить"
+                        Background="{StaticResource AccentPinkBrush}"
+                        Foreground="White" BorderThickness="0"
+                        Padding="25,10" Margin="8,0,0,0" Cursor="Hand"
+                        Click="Ban_Click" Style="{StaticResource SmallButtonStyle}"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

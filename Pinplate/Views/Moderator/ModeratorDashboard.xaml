@@ -1,0 +1,193 @@
+﻿<UserControl x:Class="Pinplate.Views.Moderator.ModeratorDashboard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Pinplate.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900">
+
+    <UserControl.DataContext>
+        <vm:ModeratorDashboardViewModel/>
+    </UserControl.DataContext>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+
+            <!-- Заголовок -->
+            <TextBlock Text="Панель модератора"
+                       FontSize="24" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}"
+                       Margin="0,0,0,20"/>
+
+            <!-- Карточки статистики -->
+            <UniformGrid Columns="4" Margin="0,0,0,20">
+
+                <!-- Жалобы -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,10,0">
+                    <StackPanel>
+                        <TextBlock FontSize="18" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}">
+                            <Run Text="Жалоб: "/>
+                            <Run Text="{Binding ReportsCount, Mode=OneWay}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="12" Margin="0,5,0,0"
+                                   Foreground="{StaticResource AccentGreenBrush}">
+                            <Run Text="▲ +"/>
+                            <Run Text="{Binding ReportsDelta, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <!-- Спам -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,10,0">
+                    <StackPanel>
+                        <TextBlock FontSize="18" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}">
+                            <Run Text="Спам: "/>
+                            <Run Text="{Binding SpamCount, Mode=OneWay}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="12" Margin="0,5,0,0"
+                                   Foreground="{StaticResource AccentPinkBrush}">
+                            <Run Text="▼ "/>
+                            <Run Text="{Binding SpamDelta, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <!-- На модерации -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,10,0">
+                    <StackPanel>
+                        <TextBlock FontSize="18" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}">
+                            <Run Text="На модерации: "/>
+                            <Run Text="{Binding OnModerationCount, Mode=OneWay}"/>
+                        </TextBlock>
+                        <TextBlock Text="Ожидают проверки" FontSize="12"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Юзеры -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock FontSize="18" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}">
+                            <Run Text="Юзеров: "/>
+                            <Run Text="{Binding UsersCount, Mode=OneWay}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="12" Margin="0,5,0,0"
+                                   Foreground="{StaticResource AccentGreenBrush}">
+                            <Run Text="▲ +"/>
+                            <Run Text="{Binding UsersDelta, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+            </UniformGrid>
+
+            <!-- Средняя секция -->
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- График -->
+                <Border Grid.Column="0" Style="{StaticResource CardStyle}"
+                        Height="240" Margin="0,0,10,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="График активности"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+
+                        <Canvas Grid.Row="1" Margin="0,20,0,20" ClipToBounds="True">
+                            <Line X1="0" Y1="0" X2="0" Y2="150" Stroke="#CCCCCC"/>
+                            <Line X1="0" Y1="150" X2="400" Y2="150" Stroke="#CCCCCC"/>
+                            <Polyline Points="0,150 60,150 120,50 180,150"
+                                      Stroke="#333333" StrokeThickness="2"/>
+                        </Canvas>
+
+                        <TextBlock Grid.Row="2"
+                                   Text="Открыть все жалобы →"
+                                   Foreground="{StaticResource AccentPinkBrush}"
+                                   FontSize="12" Cursor="Hand"
+                                   MouseLeftButtonUp="OpenAllReports_Click"/>
+                    </Grid>
+                </Border>
+
+                <!-- Последние жалобы -->
+                <Border Grid.Column="1" Style="{StaticResource CardStyle}" Height="240">
+                    <StackPanel>
+                        <TextBlock Text="Последние жалобы" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   Margin="0,0,0,15"/>
+
+                        <ItemsControl ItemsSource="{Binding LastReports}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="{StaticResource TextPrimaryBrush}"
+                                               FontSize="13" Margin="0,0,0,10">
+                                        <Run Text="• "/>
+                                        <Run Text="{Binding DisplayText, Mode=OneWay}"/>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Логи -->
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <TextBlock Text="Последние логи" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               Margin="0,0,0,15"/>
+
+                    <ItemsControl ItemsSource="{Binding LastLogs}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="100"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="{Binding Time}"
+                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                               FontSize="12"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding User}"
+                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                               FontSize="12"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Action}"
+                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                               FontSize="12"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding Status}"
+                                               Foreground="{StaticResource AccentPinkBrush}"
+                                               FontSize="12"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <TextBlock Text="Все логи →"
+                               Foreground="{StaticResource AccentPinkBrush}"
+                               FontSize="12" Cursor="Hand"
+                               Margin="0,10,0,0"
+                               MouseLeftButtonUp="OpenAllLogs_Click"/>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

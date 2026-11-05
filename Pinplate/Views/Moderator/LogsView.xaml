@@ -1,0 +1,127 @@
+﻿<UserControl x:Class="Pinplate.Views.Moderator.LogsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Pinplate.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="900">
+
+    <UserControl.DataContext>
+        <vm:LogsViewModel/>
+    </UserControl.DataContext>
+
+    <StackPanel>
+        <TextBlock Text="Логи"
+                   FontSize="24" FontWeight="Bold"
+                   Foreground="{StaticResource TextPrimaryBrush}"
+                   Margin="0,0,0,20"/>
+
+        <Border Style="{StaticResource CardStyle}" Padding="15" Margin="0,0,0,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ComboBox Grid.Column="0" Width="110" Margin="0,0,10,0"
+                          SelectedValue="{Binding SelectedStatus}" SelectedValuePath="Content">
+                    <ComboBoxItem Content="Все"/>
+                    <ComboBoxItem Content="Открыта"/>
+                    <ComboBoxItem Content="Решено"/>
+                </ComboBox>
+                <ComboBox Grid.Column="1" Width="120" Margin="0,0,10,0"
+                          SelectedValue="{Binding SelectedSort}" SelectedValuePath="Content">
+                    <ComboBoxItem Content="По дате"/>
+                    <ComboBoxItem Content="По юзеру"/>
+                </ComboBox>
+
+                <TextBlock Grid.Column="4" Text="Сбросить"
+                           Foreground="{StaticResource AccentPinkBrush}"
+                           FontSize="12" Cursor="Hand" VerticalAlignment="Center">
+                    <TextBlock.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding ResetCommand}"/>
+                    </TextBlock.InputBindings>
+                </TextBlock>
+            </Grid>
+        </Border>
+
+        <Border Background="#EFE6E0" CornerRadius="8,8,0,0" Padding="15,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="ВРЕМЯ" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" FontWeight="SemiBold"/>
+                <TextBlock Grid.Column="1" Text="ЮЗЕР" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" FontWeight="SemiBold"/>
+                <TextBlock Grid.Column="2" Text="ДЕЙСТВИЕ" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" FontWeight="SemiBold"/>
+                <TextBlock Grid.Column="3" Text="СТАТУС" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" FontWeight="SemiBold"/>
+                <TextBlock Grid.Column="4" Text="ДЕЙСТВИЯ" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" FontWeight="SemiBold"/>
+            </Grid>
+        </Border>
+
+        <ItemsControl ItemsSource="{Binding Logs}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="{StaticResource CardBrush}" Padding="15,12" Margin="0,0,0,1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="{Binding Time}" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding User}" FontSize="12" Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Action}" FontSize="12" Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <TextBlock Grid.Column="3" Text="{Binding Status}" FontSize="12" Foreground="{Binding Status, Converter={StaticResource StatusToColor}}"/>
+                            <Button Grid.Column="4" Content="Ответить"
+                                    Background="Transparent"
+                                    Foreground="{StaticResource TextPrimaryBrush}"
+                                    BorderBrush="#DDDDDD"
+                                    BorderThickness="1"
+                                    Padding="10,5"
+                                    FontSize="11"
+                                    Cursor="Hand"
+                                    Command="{Binding DataContext.ReplyCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}" Style="{StaticResource SmallButtonStyle}"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!-- Пагинация -->
+        <Grid Margin="0,15,0,0">
+            <TextBlock Text="{Binding PageInfo}" 
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       FontSize="12" VerticalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="◀" Width="30" Height="30" Margin="0,0,5,0" Cursor="Hand" 
+                        Command="{Binding PrevPageCommand}" Style="{StaticResource SmallButtonStyle}"/>
+
+                <Button Content="1" Width="30" Height="30" Margin="0,0,5,0"
+                        Background="{StaticResource AccentPinkBrush}" Foreground="White"
+                        BorderThickness="0" Cursor="Hand" 
+                        Command="{Binding GoToPageCommand}" CommandParameter="1" Style="{StaticResource SmallButtonStyle}"/>
+
+                <Button Content="2" Width="30" Height="30" Margin="0,0,5,0" Cursor="Hand" 
+                        Command="{Binding GoToPageCommand}" CommandParameter="2" Style="{StaticResource SmallButtonStyle}"/>
+
+                <Button Content="3" Width="30" Height="30" Margin="0,0,5,0" Cursor="Hand" 
+                        Command="{Binding GoToPageCommand}" CommandParameter="3" Style="{StaticResource SmallButtonStyle}"/>
+
+                <Button Content="▶" Width="30" Height="30" Cursor="Hand" 
+                        Command="{Binding NextPageCommand}" Style="{StaticResource SmallButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

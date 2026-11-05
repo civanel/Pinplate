@@ -1,0 +1,63 @@
+﻿<Window x:Class="Pinplate.Views.Moderator.Dialogs.DeleteRecipeDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Удалить рецепт"
+        Width="420" Height="241"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="White"
+        WindowStyle="None"
+        AllowsTransparency="True">
+
+    <Border CornerRadius="12" Background="White" Margin="20">
+        <Border.Effect>
+            <DropShadowEffect Color="#444" BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="25,20,25,10">
+                <TextBlock Text="Удалить рецепт" FontSize="16" FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                <TextBlock Text="✕" FontSize="16"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           HorizontalAlignment="Right" Cursor="Hand"
+                           MouseLeftButtonUp="Close_Click"/>
+            </Grid>
+
+            <StackPanel Grid.Row="1" Margin="25,10">
+                <TextBlock Text="{Binding RecipeTitle, StringFormat='«{0}»'}"
+                           FontSize="14" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Margin="0,0,0,10"/>
+                <TextBlock Text="Действие необратимо. Рецепт будет удалён из базы и ленты."
+                           FontSize="12" TextWrapping="Wrap"
+                           Foreground="{StaticResource TextSecondaryBrush}"/>
+            </StackPanel>
+
+            <Grid Grid.Row="2" Margin="25,10,25,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Content="Отмена"
+                        Background="Transparent"
+                        Foreground="{StaticResource TextPrimaryBrush}"
+                        BorderBrush="#DDDDDD" BorderThickness="1"
+                        Padding="25,10" Cursor="Hand"
+                        Click="Close_Click" Style="{StaticResource SmallButtonStyle}"/>
+                <Button Grid.Column="2" Content="Удалить"
+                        Background="{StaticResource AccentPinkBrush}"
+                        Foreground="White" BorderThickness="0"
+                        Padding="25,10" Margin="8,0,0,0" Cursor="Hand"
+                        Click="Delete_Click" Style="{StaticResource SmallButtonStyle}"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

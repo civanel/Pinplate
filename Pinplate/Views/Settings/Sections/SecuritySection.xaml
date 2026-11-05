@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="Pinplate.Views.Settings.Sections.SecuritySection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Pinplate.ViewModels.Settings"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="600">
+
+    <UserControl.DataContext>
+        <vm:SecuritySectionViewModel/>
+    </UserControl.DataContext>
+
+    <Border Style="{StaticResource CardStyle}" VerticalAlignment="Top">
+        <StackPanel>
+            <TextBlock Text="Безопасность"
+                       FontSize="16" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}"
+                       Margin="0,0,0,20"/>
+
+            <!-- Пароль -->
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Пароль"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               FontSize="13" FontWeight="SemiBold"/>
+                    <TextBlock Foreground="{StaticResource TextSecondaryBrush}"
+                               FontSize="11" Margin="0,3,0,0">
+                        <Run Text="Последняя смена: "/>
+                        <Run Text="{Binding LastPasswordChange, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                    </TextBlock>
+                </StackPanel>
+                <Button Grid.Column="1"
+                        Content="Сменить пароль"
+                        Background="{StaticResource AccentPinkBrush}"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Padding="15,8"
+                        Cursor="Hand"
+                        Command="{Binding ChangePasswordCommand}" Style="{StaticResource SmallButtonStyle}"/>
+            </Grid>
+
+            <!-- 2FA -->
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Text="Двухфакторная аутентификация"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           FontSize="13" VerticalAlignment="Center"/>
+                <ToggleButton Grid.Column="1"
+                              Style="{StaticResource ToggleSwitchStyle}"
+                              IsChecked="{Binding IsTwoFactorEnabled}"/>
+            </Grid>
+
+            <!-- Logout all -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Text="Выйти со всех устройств"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           FontSize="13" VerticalAlignment="Center"/>
+                <Button Grid.Column="1"
+                        Content="Выйти"
+                        Background="Transparent"
+                        Foreground="{StaticResource AccentPinkBrush}"
+                        BorderBrush="{StaticResource AccentPinkBrush}"
+                        BorderThickness="1"
+                        Padding="15,8"
+                        Cursor="Hand"
+                        Command="{Binding LogoutAllCommand}" Style="{StaticResource SmallButtonStyle}"/>
+            </Grid>
+        </StackPanel>
+    </Border>
+</UserControl>
